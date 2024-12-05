@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "../lib/transmitter.hpp"
+#include "transmitter.hpp"
 
 const byte address[6] = "00001";
 Transmitter transmitter(address);
