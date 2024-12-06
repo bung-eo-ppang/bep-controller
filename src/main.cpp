@@ -21,25 +21,63 @@ void loop() {
   uint32_t time = millis();
   int count = 1;
 
-  Serial.write(SIGNATURE, sizeof(SIGNATURE));
-  Serial.write((byte*)&time, sizeof(time));
-  Serial.write((byte*)&count, sizeof(count));
-  Serial.write(VERSION, sizeof(VERSION));
+  byte buffer[16 * 5];
+
+  int bufferIndex = 0;
+
+  memcpy(buffer + bufferIndex, SIGNATURE, sizeof(SIGNATURE));
+  bufferIndex += sizeof(SIGNATURE);
+
+  memcpy(buffer + bufferIndex, &time, sizeof(time));
+  bufferIndex += sizeof(time);
+
+  memcpy(buffer + bufferIndex, &count, sizeof(count));
+  bufferIndex += sizeof(count);
+
+  memcpy(buffer + bufferIndex, VERSION, sizeof(VERSION));
+  bufferIndex += sizeof(VERSION);
 
   for (short i = 0; i < count; i++) {
-    Serial.write((byte*)&i, sizeof(i));
-    Serial.write(VERSION, sizeof(VERSION));
-    Serial.write((byte*)&time, sizeof(time));
+    memcpy(buffer + bufferIndex, &i, sizeof(i));
+    bufferIndex += sizeof(i);
 
-    Serial.write((byte*)&ypr.yaw, sizeof(ypr.yaw));
-    Serial.write((byte*)&ypr.pitch, sizeof(ypr.pitch));
-    Serial.write((byte*)&ypr.roll, sizeof(ypr.roll));
+    memcpy(buffer + bufferIndex, VERSION, sizeof(VERSION));
+    bufferIndex += sizeof(VERSION);
+
+    memcpy(buffer + bufferIndex, &time, sizeof(time));
+    bufferIndex += sizeof(time);
+
+    memcpy(buffer + bufferIndex, &ypr.yaw, sizeof(ypr.yaw));
+    bufferIndex += sizeof(ypr.yaw);
+
+    memcpy(buffer + bufferIndex, &ypr.pitch, sizeof(ypr.pitch));
+    bufferIndex += sizeof(ypr.pitch);
+
+    memcpy(buffer + bufferIndex, &ypr.roll, sizeof(ypr.roll));
+    bufferIndex += sizeof(ypr.roll);
 
     float joyX = 0;
     float joyY = 0;
     byte buttons[] = { 0b1111, 0b1111, 0b1111, 0b1111 };
-    Serial.write((byte*)&joyX, sizeof(joyX));
-    Serial.write((byte*)&joyY, sizeof(joyY));
-    Serial.write((byte*)&buttons, sizeof(buttons));
+
+    memcpy(buffer + bufferIndex, &joyX, sizeof(joyX));
+    bufferIndex += sizeof(joyX);
+
+    memcpy(buffer + bufferIndex, &joyY, sizeof(joyY));
+    bufferIndex += sizeof(joyY);
+
+    memcpy(buffer + bufferIndex, &buttons, sizeof(buttons));
+    bufferIndex += sizeof(buttons);
   }
+
+  uint8_t checksum[16];
+  for (int i = 0; i < 16; i++) {
+    checksum[i] = 0;
+    for (int j = 0; j < bufferIndex; j++) {
+      checksum[i] ^= buffer[j];
+    }
+  }
+  memcpy(buffer + bufferIndex, checksum, sizeof(checksum));
+
+  Serial.write(buffer, bufferIndex);
 }
