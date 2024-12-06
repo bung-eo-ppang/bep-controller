@@ -71,7 +71,7 @@ void loop() {
   }
 
   uint8_t checksum[8];
-  for (int i = 0; i < sizeof(checksum) / sizeof(uint8_t); i++) {
+  for (int i = 0; i < sizeof(checksum); i++) {
     checksum[i] = 0;
     for (int j = 0; j < bufferIndex; j++) {
       checksum[i] ^= buffer[j];
