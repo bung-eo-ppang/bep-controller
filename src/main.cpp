@@ -70,14 +70,18 @@ void loop() {
     bufferIndex += sizeof(buttons);
   }
 
-  uint8_t checksum[16];
-  for (int i = 0; i < 16; i++) {
+  uint8_t checksum[8];
+  for (int i = 0; i < sizeof(checksum) / sizeof(uint8_t); i++) {
     checksum[i] = 0;
     for (int j = 0; j < bufferIndex; j++) {
       checksum[i] ^= buffer[j];
     }
   }
   memcpy(buffer + bufferIndex, checksum, sizeof(checksum));
+  bufferIndex += sizeof(checksum);
+
+  memcpy(buffer + bufferIndex, END_SIGNATURE, sizeof(END_SIGNATURE));
+  bufferIndex += sizeof(END_SIGNATURE);
 
   Serial.write(buffer, bufferIndex);
 }
