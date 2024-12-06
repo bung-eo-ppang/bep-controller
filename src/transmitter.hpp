@@ -1,3 +1,6 @@
+#ifndef TRANSMITTER_HPP
+#define TRANSMITTER_HPP
+
 #include <RF24.h>
 
 class Transmitter {
@@ -12,3 +15,5 @@ public:
 
   ~Transmitter();
 };
+
+#endif

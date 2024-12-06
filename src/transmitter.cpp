@@ -6,7 +6,7 @@
 const byte address[6] = "00001";
 
 Transmitter::Transmitter(const uint8_t* address) : address(address) {
-  radio = RF24(7, 8);
+  radio = RF24(8, 9);
 }
 
 Transmitter::~Transmitter() {
