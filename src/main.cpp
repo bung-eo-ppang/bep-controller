@@ -71,7 +71,7 @@ void loop() {
   }
 
   uint8_t checksum[8];
-  for (int i = 0; i < sizeof(checksum); i++) {
+  for (unsigned int i = 0; i < sizeof(checksum); i++) {
     checksum[i] = 0;
     for (int j = 0; j < bufferIndex; j++) {
       checksum[i] ^= buffer[j];
@@ -84,4 +84,6 @@ void loop() {
   bufferIndex += sizeof(END_SIGNATURE);
 
   Serial.write(buffer, bufferIndex);
+
+  delay(100);
 }
