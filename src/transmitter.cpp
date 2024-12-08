@@ -30,5 +30,4 @@ void Transmitter::init() {
 
 void Transmitter::write(const void* buffer, size_t size) {
   Serial.println(radio.write(buffer, size));
-  delay(1000);
 }
