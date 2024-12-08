@@ -10,9 +10,9 @@ struct YawPitchRoll {
 };
 
 struct Accel {
-  float x;
-  float y;
-  float z;
+  int16_t x;
+  int16_t y;
+  int16_t z;
 };
 
 

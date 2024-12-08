@@ -69,6 +69,8 @@ void loop() {
     memcpy(buffer + bufferIndex, &accel.z, sizeof(accel.z));
     bufferIndex += sizeof(accel.z);
 
+    bufferIndex += 6; // unused padding
+
     float joyX = 0;
     float joyY = 0;
     uint32_t buttons = 0b0000000000000000;
