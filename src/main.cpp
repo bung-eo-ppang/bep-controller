@@ -9,17 +9,15 @@ Gyro gyro(7);
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial);
 
   gyro.init();
-  // transmitter.init();
+  transmitter.init();
 
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
 }
 
 void loop() {
-  // transmitter.write();
   auto ypr = gyro.getYawPitchRoll();
   auto accel = gyro.getAccel();
   uint32_t time = millis();
@@ -38,14 +36,14 @@ void loop() {
   memcpy(buffer + bufferIndex, &count, sizeof(count));
   bufferIndex += sizeof(count);
 
-  memcpy(buffer + bufferIndex, VERSION, sizeof(VERSION));
+  memcpy(buffer + bufferIndex, &VERSION, sizeof(VERSION));
   bufferIndex += sizeof(VERSION);
 
   for (short i = 0; i < count; i++) {
     memcpy(buffer + bufferIndex, &i, sizeof(i));
     bufferIndex += sizeof(i);
 
-    memcpy(buffer + bufferIndex, VERSION, sizeof(VERSION));
+    memcpy(buffer + bufferIndex, &VERSION, sizeof(VERSION));
     bufferIndex += sizeof(VERSION);
 
     memcpy(buffer + bufferIndex, &time, sizeof(time));
@@ -102,7 +100,7 @@ void loop() {
   memcpy(buffer + bufferIndex, END_SIGNATURE, sizeof(END_SIGNATURE));
   bufferIndex += sizeof(END_SIGNATURE);
 
-  Serial.write(buffer, bufferIndex);
+  transmitter.write(buffer, bufferIndex);
 
   delay(100);
 }
