@@ -11,7 +11,7 @@ public:
   Transmitter(const uint8_t* address);
 
   void init();
-  void write();
+  void write(const void* buffer, size_t size);
 
   ~Transmitter();
 };

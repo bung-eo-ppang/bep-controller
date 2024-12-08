@@ -28,8 +28,7 @@ void Transmitter::init() {
   radio.printPrettyDetails();
 }
 
-void Transmitter::write() {
-  const char* text = "Hello, World!";
-  Serial.println(radio.write(text, strlen(text)));
+void Transmitter::write(const void* buffer, size_t size) {
+  Serial.println(radio.write(buffer, size));
   delay(1000);
 }
