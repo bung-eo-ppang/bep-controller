@@ -21,6 +21,7 @@ void setup() {
 void loop() {
   // transmitter.write();
   auto ypr = gyro.getYawPitchRoll();
+  auto accel = gyro.getAccel();
   uint32_t time = millis();
   short count = 1;
 
@@ -56,9 +57,17 @@ void loop() {
     memcpy(buffer + bufferIndex, &ypr.pitch, sizeof(ypr.pitch));
     bufferIndex += sizeof(ypr.pitch);
 
-
     memcpy(buffer + bufferIndex, &ypr.roll, sizeof(ypr.roll));
     bufferIndex += sizeof(ypr.roll);
+
+    memcpy(buffer + bufferIndex, &accel.x, sizeof(accel.x));
+    bufferIndex += sizeof(accel.x);
+
+    memcpy(buffer + bufferIndex, &accel.y, sizeof(accel.y));
+    bufferIndex += sizeof(accel.y);
+
+    memcpy(buffer + bufferIndex, &accel.z, sizeof(accel.z));
+    bufferIndex += sizeof(accel.z);
 
     float joyX = 0;
     float joyY = 0;
@@ -74,6 +83,8 @@ void loop() {
 
     memcpy(buffer + bufferIndex, &buttons, sizeof(buttons));
     bufferIndex += sizeof(buttons);
+
+    bufferIndex += 4; // unused padding
   }
 
   uint8_t checksum[8];

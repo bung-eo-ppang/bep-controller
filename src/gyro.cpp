@@ -88,3 +88,20 @@ YawPitchRoll Gyro::getYawPitchRoll() {
       ypr[2] * 180 / M_PI
   };
 }
+
+Accel Gyro::getAccel() {
+  VectorInt16 aa;
+  VectorInt16 aaReal;
+  VectorInt16 aaWorld;
+  mpu.dmpGetCurrentFIFOPacket(fifoBuffer);
+  mpu.dmpGetQuaternion(&q, fifoBuffer);
+  mpu.dmpGetAccel(&aa, fifoBuffer);
+  mpu.dmpGetGravity(&gravity, &q);
+  mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
+  mpu.dmpConvertToWorldFrame(&aaWorld, &aaReal, &q);
+  return {
+      aaWorld.x,
+      aaWorld.y,
+      aaWorld.z
+  };
+}

@@ -9,6 +9,12 @@ struct YawPitchRoll {
   float roll;
 };
 
+struct Accel {
+  float x;
+  float y;
+  float z;
+};
+
 
 class Gyro {
 private:
@@ -26,6 +32,7 @@ public:
   Gyro(int interruptPin);
   void init();
   YawPitchRoll getYawPitchRoll();
+  Accel getAccel();
 };
 
 #endif
