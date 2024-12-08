@@ -13,13 +13,16 @@ void setup() {
 
   gyro.init();
   // transmitter.init();
+
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
 }
 
 void loop() {
   // transmitter.write();
   auto ypr = gyro.getYawPitchRoll();
   uint32_t time = millis();
-  int count = 1;
+  short count = 1;
 
   byte buffer[16 * 5];
 
@@ -53,12 +56,15 @@ void loop() {
     memcpy(buffer + bufferIndex, &ypr.pitch, sizeof(ypr.pitch));
     bufferIndex += sizeof(ypr.pitch);
 
+
     memcpy(buffer + bufferIndex, &ypr.roll, sizeof(ypr.roll));
     bufferIndex += sizeof(ypr.roll);
 
     float joyX = 0;
     float joyY = 0;
-    byte buttons[] = { 0b1111, 0b1111, 0b1111, 0b1111 };
+    uint32_t buttons = 0b0000000000000000;
+    buttons |= !digitalRead(4) << 0;
+    buttons |= !digitalRead(5) << 1;
 
     memcpy(buffer + bufferIndex, &joyX, sizeof(joyX));
     bufferIndex += sizeof(joyX);
