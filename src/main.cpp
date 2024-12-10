@@ -74,6 +74,8 @@ void loop() {
     uint32_t buttons = 0b0000000000000000;
     buttons |= !digitalRead(4) << 0;
     buttons |= !digitalRead(5) << 1;
+    buttons |= !digitalRead(6) << 2;
+    buttons |= !digitalRead(10) << 3;
 
     memcpy(buffer + bufferIndex, &joyX, sizeof(joyX));
     bufferIndex += sizeof(joyX);
