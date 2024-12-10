@@ -101,6 +101,4 @@ void loop() {
   bufferIndex += sizeof(END_SIGNATURE);
 
   transmitter.write(buffer, bufferIndex);
-
-  delay(100);
 }
