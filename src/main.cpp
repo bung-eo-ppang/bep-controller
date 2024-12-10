@@ -1,17 +1,13 @@
 #include <Arduino.h>
-#include "transmitter.hpp"
 #include "gyro.hpp"
 #include "constants.hpp"
 
-const byte address[6] = "00001";
-Transmitter transmitter(address);
 Gyro gyro(7);
 
 void setup() {
   Serial.begin(115200);
 
   gyro.init();
-  transmitter.init();
 
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
@@ -104,6 +100,5 @@ void loop() {
   memcpy(buffer + bufferIndex, END_SIGNATURE, sizeof(END_SIGNATURE));
   bufferIndex += sizeof(END_SIGNATURE);
 
-  // transmitter.write(buffer, bufferIndex);
   Serial.write(buffer, bufferIndex);
 }
