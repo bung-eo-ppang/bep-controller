@@ -100,5 +100,6 @@ void loop() {
   memcpy(buffer + bufferIndex, END_SIGNATURE, sizeof(END_SIGNATURE));
   bufferIndex += sizeof(END_SIGNATURE);
 
-  transmitter.write(buffer, bufferIndex);
+  // transmitter.write(buffer, bufferIndex);
+  Serial.write(buffer, bufferIndex);
 }
