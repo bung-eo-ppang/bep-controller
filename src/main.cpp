@@ -15,6 +15,8 @@ void setup() {
 
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(10, INPUT_PULLUP);
 }
 
 void loop() {
